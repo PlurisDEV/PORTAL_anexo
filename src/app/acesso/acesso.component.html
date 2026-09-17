@@ -1,0 +1,17 @@
+
+<mat-grid-list cols="4" rowHeight="1:1" >
+    <mat-grid-tile colspan="3" rowspan="2">
+      <app-banner></app-banner>
+    </mat-grid-tile>
+
+    
+    <mat-grid-tile *ngIf="cadastroComponent; else formLogin" colspan="1" rowspan="2">
+      <app-cadastro (exibirPainel)="exibirPainel($event)"></app-cadastro>
+    </mat-grid-tile>
+
+    <ng-template #formLogin>
+      <mat-grid-tile colspan="1" rowspan="2" ><app-login (exibirPainel)="exibirPainel($event)"></app-login></mat-grid-tile>
+    </ng-template>
+      
+    
+</mat-grid-list>

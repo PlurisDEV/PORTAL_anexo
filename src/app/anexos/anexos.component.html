@@ -1,0 +1,40 @@
+<div class="row">
+    <h1>Baixar anexos</h1>
+</div>
+
+<mat-progress-spinner mode="indeterminate" diameter="45" *ngIf="mostrarTabela == false"></mat-progress-spinner>
+
+<div style="text-align: right;" *ngIf="mostrarTabela">
+    <button class="btn btn-info btn-sm" data-toggle="modal" (click)="downloadAll()">Baixar todos</button>
+</div>
+
+<div>
+    <div *ngIf="mostrarTabela" >
+    <hr>
+        <table datatable [dtOptions]="dtOptions">
+            <thead>
+                <tr>
+                    <th>Nome</th>
+                    <th>Data</th>
+                    <th>Download</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr *ngFor="let colunas of lstAnexos">
+                    <th>{{colunas.nomeAnexo}}</th>
+                    <th>{{colunas.dtAnexo}}</th>
+                    <th>
+                        <a [href]="colunas.urlDownload" [download]="colunas.nomeAnexo">
+                            <span class="material-icons">
+                                cloud_download
+                            </span>
+                        </a>
+                    </th>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+  
+

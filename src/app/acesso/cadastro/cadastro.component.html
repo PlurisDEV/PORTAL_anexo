@@ -1,0 +1,71 @@
+<div class="row text-center">
+    <h1>Cadastrar Funcionario</h1>
+</div>
+<br>
+
+<div class="row margincontainer ">
+    <form  [formGroup]="formCadastro" novalidate (ngSubmit)="cadastrar()">
+        <div class="row">
+            <mat-form-field appearance="outline" style="width: 300px;">
+                <mat-label>Nome</mat-label>
+                <input matInput placeholder="Chandra Nallar" formControlName="nome" >
+                
+            </mat-form-field>
+        </div>
+        <div class="row">
+            <mat-form-field appearance="outline" style="width: 300px;">
+                <mat-label>email</mat-label>
+                <input matInput placeholder="pat@example.com" formControlName="email" >
+                
+            </mat-form-field>
+        </div>
+        <div class="row">
+
+            <select class="form-control">
+                <option value="">Tipo do usuário</option>
+                <option 
+                *ngFor="let tipoFunc of lstTipoFuncionario" 
+                [value]="tipoFunc.id" 
+                selected="{{ idTipoFuncionario == tipoFunc.id ? 'selected' : '' }}"
+                >{{tipoFunc.descricao}}</option>
+            </select>
+            
+        </div>
+        <div class="row">
+            <mat-form-field appearance="outline" style="width: 300px;">
+                <mat-label>Usuário</mat-label>
+                <input matInput placeholder="Chandra Nallar" formControlName="user" >
+                
+            </mat-form-field>
+        </div>
+        <div class="row">
+            <mat-form-field appearance="outline" style="width: 300px;">
+                <mat-label>Senha</mat-label>
+                <input matInput  [type]="hide ? 'password' : 'text'" formControlName="senha">
+                <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+                    <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+                </button>
+            </mat-form-field>
+        </div>
+        
+        <!--<div class="row">
+            <mat-form-field appearance="outline" style="width: 300px;">
+                <mat-label>Confirmar Senha</mat-label>
+                <input matInput  [type]="hideConf ? 'password' : 'text'" formControlName="confirmarSenha">
+                <button mat-icon-button matSuffix (click)="hideConf = !hideConf" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hideConf">
+                    <mat-icon>{{hideConf ? 'visibility_off' : 'visibility'}}</mat-icon>
+                </button>
+            </mat-form-field>
+        </div>-->
+        
+        <div class="row">
+            <div class="col justify-content-start">
+        
+                <button mat-raised-button color="primary" type="submit" style="width: 120px;" >Cadastrar</button>
+            </div>
+            <!--<div class="col justify-content-end">
+                <button mat-raised-button color="accent" style="width: 100px;" (click)="exibirPainelLogin()" >Login</button>
+            </div>--> 
+        </div>
+    </form>
+</div>
