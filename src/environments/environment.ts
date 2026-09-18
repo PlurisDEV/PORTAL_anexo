@@ -9,7 +9,7 @@ export const environment = {
   //ACESSOS DA APLICAÇÃO CADASTRADOS NO BACKEND (SPRING BOOT)
   urlBackend: 'http://10.242.6.191:8280', // TESTES LOCAIS
   clientId: 'portal-anexo-pluris',
-  clientSecret: 'PLURIS_oiuUYILlkjoiHJJUYfjgj567jhg756JHGJHG5uyi', 
+  clientSecret: '', 
   
   //CHAMADAS (SEVIÇOS BACKEND SPRING BOOT)
   //POST s
@@ -30,4 +30,4 @@ export const environment = {
  * This import should be commented out in production mode because it will have a negative impact
  * on performance if an error is thrown.
  */
-// import 'zone.js/dist/zone-error';  // Included with Angular CLI.
+// import 'zone.js/plugins/zone-error';  // Included with Angular CLI.

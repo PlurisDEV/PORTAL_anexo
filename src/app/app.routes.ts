@@ -10,6 +10,7 @@ import { CadastroComponent } from './acesso/cadastro/cadastro.component'
 
 
 export const ROUTES: Routes = [
+    { path: '', component: AcessoComponent },
     { path: ':empresa/:chamado/:maniSeq', component: AcessoComponent },
     { path: 'home', component: HomeComponent,
         children: [
