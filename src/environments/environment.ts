@@ -7,7 +7,8 @@ export const environment = {
   production: false,
 
   //ACESSOS DA APLICAÇÃO CADASTRADOS NO BACKEND (SPRING BOOT)
-  urlBackend: 'http://10.242.6.191:8280', // TESTES LOCAIS
+  // urlBackend: 'http://localhost:8280', // TESTES LOCAIS
+  urlBackend: 'https://portalanexobackend-ranbaxy.plurismidia.com.br', // TESTES LOCAIS
   clientId: 'portal-anexo-pluris',
   clientSecret: '', 
   

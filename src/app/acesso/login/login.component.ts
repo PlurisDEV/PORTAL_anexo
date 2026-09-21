@@ -36,7 +36,7 @@ export class LoginComponent implements OnInit {
   }
   
   public entrar(): void{
-    console.log(this.formLogin)
+    console.log(this.empresa)
     
     this.auth.autenticar(this.formLogin.value.usuario, this.formLogin.value.senha, this.empresa, this.chamado, this.maniSeq);
   }  

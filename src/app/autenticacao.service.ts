@@ -15,7 +15,7 @@ export class Autenticacao {
   
     clientID: string = environment.clientId
     clientSecret: string = environment.clientSecret
-    errors: String[] = [""]
+    errors: string = ""
 
     public token_id: string
     
@@ -25,88 +25,46 @@ export class Autenticacao {
         protected notification: NotificationService
     ){ }
 
-    tentarLogar( userName: string, password: string) :  Observable<any>{
-       
-        //PARAMETROS QUE VAI NO BODY DO POST
-        const params = new HttpParams()
-            .set('username',  userName)
-            .set('password', password)
-            .set('grant_type', 'password')
-
-        //HEADER PARA O POST                                
-        const headers = {
-            'Authorization' : 'Basic ' + btoa(`${this.clientID}:${this.clientSecret}`),
-            'Content-Type' : 'application/x-www-form-urlencoded'
-        }
-       
-        //return this.http.post(this.tokenURL, params.toString, { headers : headers});
-        return this.http.post(this.tokenURL, params, { headers : headers});
-        
-    }   
-
     public autenticar(usuario: string, senha: string, empresa:string, chamado:string, maniSeq:string): void{
 
-        this.tentarLogar("DEV_PLURIS", "SuportePluris#2469").subscribe(
-            response => { //CASO SUCESSO
+        this.storageLogin(usuario, senha, empresa).subscribe(
+            response => {
 
-                //ARMAZENA O TOKEN NO BROWSER 
-                const access_token = JSON.stringify(response);
-                localStorage.setItem('access_token', access_token);
+                localStorage.removeItem('access_token');
 
-                this.storageLogin(usuario, senha, empresa).subscribe(
-                    response => {
-                        
-                        //ARMAZENA INFORMAÇÕES DO USUÁRIO NO BROWSER 
-                        localStorage.setItem('idFuncionario',   response.idFuncCdFuncionario);
-                        localStorage.setItem('nomeFuncionario', response.funcNmFuncionario);
-                        localStorage.setItem('tipoPermissao', response.funcDsPermissao);
-                        localStorage.setItem('empresa', empresa);
-                        localStorage.setItem('chamado', chamado);
-                        localStorage.setItem('maniSeq', maniSeq);
+                localStorage.setItem('idFuncionario',   response.idFuncCdFuncionario);
+                localStorage.setItem('nomeFuncionario', response.funcNmFuncionario);
+                localStorage.setItem('tipoPermissao', response.funcDsPermissao);
+                localStorage.setItem('empresa', empresa);
+                localStorage.setItem('chamado', chamado);
+                localStorage.setItem('maniSeq', maniSeq);
 
-                        if(response.idFuncCdFuncionario == 0){
-                            this.errors = ['Usuário e/ou Senha incorreto(s)']
-                            this.notification.showError('',this.errors);
-
-                        }else{
-                        //ABRIR A TELA INICIAL
-                        this.router.navigate(['/home/allFiles']);
-
-                        }                        
-                    },errorResponse => {
-                        
-                        this.errors = ['Usuário e/ou Senha incorreto(s)']
-                        this.notification.showError('',this.errors);
-                    }
-                )
-
-            }, 
-            errorResponse => { //CASO ERRO
-                this.errors = ['Usuário e/ou Senha incorreto(s)']
-                this.notification.showError('',this.errors);
+                if(response.idFuncCdFuncionario == 0){
+                    this.errors = 'Usuário e/ou Senha incorreto(s)'
+                    this.notification.showError(this.errors);
+                }else{
+                    this.router.navigate(['/home/allFiles']);
+                }
+            },errorResponse => {
+                this.errors = 'Usuário e/ou Senha incorreto(s)'
+                this.notification.showError(this.errors);
             }
         )
     }
 
     public storageLogin( userName: string, password: string, empresa:string ) :  Observable<any>{
-        
-        const tokenString = localStorage.getItem('access_token');
-        const token = JSON.parse(tokenString);
 
-        //PARAMETROS QUE VAI NO BODY DO POST
-         let json = { "funcDsLoginname" : userName,
-                    "funcDsPassword" : password,
-                    "idEmbaCdEmpresabanco" : empresa
-                     }
-        //HEADER PARA O POST                                
+        let json = { "funcDsLoginname" : userName,
+                   "funcDsPassword" : password,
+                   "idEmbaCdEmpresabanco" : empresa
+                    }
+
         const headers = {
-            'Authorization' : 'Bearer ' + token.access_token,
             'Content-Type' : 'application/json'
         }
-       
-        //return this.http.post(this.tokenURL, params.toString, { headers : headers});
+
         return this.http.post(this.loginURL, json, { headers : headers});
-        
+
     }   
 
 

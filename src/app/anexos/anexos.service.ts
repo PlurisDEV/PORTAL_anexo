@@ -15,10 +15,10 @@ export class AnexosService {
     public obterAnexos(empresa:string, chamado:string, maniSeq:string):Promise<any> {
 
         const tokenString = localStorage.getItem('access_token');
-        const token = JSON.parse(tokenString);
+        // const token = JSON.parse(tokenString);
 
         const headers = {
-            'Authorization' : 'Bearer ' + token.access_token,
+            // 'Authorization' : 'Bearer ' + token.access_token,
             'Content-Type' : 'application/json'
         }
 

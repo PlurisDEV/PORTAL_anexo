@@ -9,15 +9,15 @@
 
             <form  [formGroup]="formLogin" novalidate (ngSubmit)="entrar()">
                 <div class="row">
-                    <mat-form-field appearance="outline" style="width: 300px;">
+                    <mat-form-field appearance="outline" floatLabel="always" style="width: 300px;">
                         <mat-label>Usuário</mat-label>
-                        <input matInput placeholder="usuario" formControlName="usuario" >
+                        <input matInput formControlName="usuario" autocomplete="username" >
                     </mat-form-field>
                 </div>
                 <div class="row">
-                    <mat-form-field appearance="outline" style="width: 300px;">
+                    <mat-form-field appearance="outline" floatLabel="always" style="width: 300px;">
                         <mat-label>Senha</mat-label>
-                        <input matInput  [type]="hide ? 'password' : 'text'" formControlName="senha">
+                        <input matInput [type]="hide ? 'password' : 'text'" formControlName="senha" autocomplete="current-password">
                         <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
                             <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
                         </button>
