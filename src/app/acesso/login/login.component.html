@@ -1,38 +1,28 @@
-<div class="row justify-content-center">
-    <div class="card shadow-lg border-0 rounded-lg">
-        <div class="card header" style="background-color:rgb(63, 81, 181); color: white;">
-            <div class="text-center font-weight-bold my-4">
-                Login
-            </div>
+<div class="login-page">
+    <div class="login-card">
+        <div class="login-header">
+            <div class="login-title">Acesso ao Sistema</div>
+            <div class="login-subtitle">Insira suas credenciais para continuar</div>
         </div>
-        <div class="card-body">
 
-            <form  [formGroup]="formLogin" novalidate (ngSubmit)="entrar()">
-                <div class="row">
-                    <mat-form-field appearance="outline" floatLabel="always" style="width: 300px;">
-                        <mat-label>Usuário</mat-label>
-                        <input matInput formControlName="usuario" autocomplete="username" >
-                    </mat-form-field>
-                </div>
-                <div class="row">
-                    <mat-form-field appearance="outline" floatLabel="always" style="width: 300px;">
-                        <mat-label>Senha</mat-label>
-                        <input matInput [type]="hide ? 'password' : 'text'" formControlName="senha" autocomplete="current-password">
-                        <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
-                            <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
-                        </button>
-                    </mat-form-field>
-                </div>
-                <div class="row">
-                    <div class="col justify-content-start">
-                        <button mat-raised-button color="primary" type="submit" style="width: 120px;" >Entrar</button>
-                    </div>
-                    <!--<div class="col justify-content-end">
-                        <button mat-raised-button color="basic" style="width: 100px;" (click)="exibirPainelCadastro()" >Cadastrar</button>
-                    </div>-->
-                </div>
-            </form>
+        <form [formGroup]="formLogin" novalidate (ngSubmit)="entrar()" class="login-form">
+            <mat-form-field appearance="standard" floatLabel="never" class="login-field">
+                <mat-icon matPrefix class="login-prefix">person</mat-icon>
+                <input matInput placeholder="Login" formControlName="usuario" autocomplete="username">
+            </mat-form-field>
 
-        </div>
+            <mat-form-field appearance="standard" floatLabel="never" class="login-field">
+                <mat-icon matPrefix class="login-prefix">lock</mat-icon>
+                <input matInput placeholder="Senha" [type]="hide ? 'password' : 'text'" formControlName="senha" autocomplete="current-password">
+                <button type="button" mat-icon-button matSuffix (click)="hide = !hide" class="login-suffix" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+                    <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+                </button>
+            </mat-form-field>
+
+            <button type="submit" class="login-button" [disabled]="formLogin.invalid">
+                <mat-icon class="login-button-icon">login</mat-icon>
+                Entrar
+            </button>
+        </form>
     </div>
 </div>

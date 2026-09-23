@@ -7,10 +7,99 @@
     
 }
 
-:host ::ng-deep .mat-form-field-appearance-outline .mat-form-field-flex {
+.login-page{
+    min-height: 100vh;
+    display: flex;
     align-items: center;
+    justify-content: center;
+    padding: 24px 12px;
+    background: #f4f6fb;
 }
 
-:host ::ng-deep .mat-form-field-label {
-    transform: translateY(-1.2em) scale(0.75) !important;
+.login-card{
+    width: min(420px, calc(100vw - 24px));
+    background: #fff;
+    border-radius: 14px;
+    box-shadow: 0 14px 50px rgba(0,0,0,.14);
+    padding: 28px 26px 24px 26px;
+}
+
+.login-header{
+    margin-bottom: 16px;
+}
+
+.login-title{
+    font-size: 22px;
+    font-weight: 700;
+    color: #111827;
+}
+
+.login-subtitle{
+    margin-top: 6px;
+    font-size: 13px;
+    color: rgba(17,24,39,.65);
+}
+
+.login-form{
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.login-field{
+    width: 100%;
+}
+
+.login-prefix{
+    color: rgba(0,0,0,.45);
+    margin-right: 8px;
+}
+
+.login-suffix{
+    color: rgba(0,0,0,.55);
+}
+
+.login-button{
+    margin-top: 8px;
+    width: 100%;
+    height: 44px;
+    border: 0;
+    border-radius: 8px;
+    background: #1f8f2e;
+    color: #fff;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.login-button:disabled{
+    opacity: .6;
+}
+
+.login-button-icon{
+    font-size: 20px;
+    height: 20px;
+    width: 20px;
+}
+
+:host ::ng-deep .mat-form-field-appearance-standard .mat-form-field-flex{
+    padding-top: 6px;
+}
+
+:host ::ng-deep .mat-form-field-appearance-standard .mat-form-field-underline{
+    background-color: rgba(0,0,0,.18);
+}
+
+:host ::ng-deep .mat-form-field-appearance-standard.mat-focused .mat-form-field-underline{
+    background-color: #1f8f2e;
+}
+
+:host ::ng-deep .mat-form-field-ripple{
+    background-color: #1f8f2e;
+}
+
+:host ::ng-deep .mat-input-element{
+    padding: 8px 0 10px 0;
 }
