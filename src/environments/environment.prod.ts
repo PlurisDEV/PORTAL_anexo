@@ -10,5 +10,6 @@ export const environment = {
   login: '/portalpluris/login',
 
   getAnexo: '/portalpluris/getanexo',
+  getAnexoById: '/portalpluris/getanexobyid',
   getLogo: '/portalpluris/getlogoempresa'
 };

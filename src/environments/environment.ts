@@ -7,8 +7,8 @@ export const environment = {
   production: false,
 
   //ACESSOS DA APLICAÇÃO CADASTRADOS NO BACKEND (SPRING BOOT)
-  // urlBackend: 'http://localhost:8280', // TESTES LOCAIS
-  urlBackend: 'https://portalanexobackend.ranbaxy.plurismidia.com.br', // TESTES LOCAIS
+  urlBackend: 'http://localhost:8180', // TESTES LOCAIS
+  //urlBackend: 'https://portalanexobackend.ranbaxy.plurismidia.com.br', // TESTES LOCAIS
   clientId: 'portal-anexo-pluris',
   clientSecret: '', 
   
@@ -20,6 +20,7 @@ export const environment = {
     
   //GET s
     getAnexo: '/portalpluris/getanexo',
+    getAnexoById: '/portalpluris/getanexobyid',
     getLogo: '/portalpluris/getlogoempresa',
 
 };

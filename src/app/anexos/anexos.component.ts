@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { DomSanitizer } from '@angular/platform-browser';
 import { AnexosModel } from './anexos.model'
 
 import * as JSZip from 'jszip';
@@ -21,11 +20,14 @@ export class AnexosComponent implements OnInit {
   public empresaSessao:string = localStorage.getItem('empresa');
 
   public lstAnexos: AnexosModel[] = []
-  public zipFile = new JSZip();
+  public isDownloading: boolean = false;
+  public downloadTotal: number = 0;
+  public downloadCurrent: number = 0;
+  public selectAllChecked: boolean = false;
+  public selectedIds: Set<string> = new Set<string>();
   
   constructor(
     private router: Router, 
-    private sanitizer: DomSanitizer,
     private anexosService: AnexosService) {  }
 
   dtOptions: DataTables.Settings = {}
@@ -41,12 +43,12 @@ export class AnexosComponent implements OnInit {
     this.lstAnexos = [];
 
     this.dtOptions = {
-      pagingType: 'full_numbers',
-      pageLength: 5,
-      lengthMenu : [5, 10, 20],
+      paging: false,
+      info: false,
       autoWidth: false,
       responsive: true,
-      scrollY:"260px",
+      scrollY:"calc(100vh - 280px)",
+      scrollCollapse: true,
       scrollX:true,
       columnDefs: [
           { className: "tableFont", targets: "_all" },
@@ -84,34 +86,111 @@ export class AnexosComponent implements OnInit {
     this.anexosService.obterAnexos(this.empresaSessao, this.chamadoSessao, this.maniSeqSessao)
       .then((retorno:AnexosModel[] = []) =>{
         this.lstAnexos = retorno;
-        
-        for (let index = 0; index < this.lstAnexos.length; index++) {
-          
-          this.mostrarTabela = true;
-          const element = this.lstAnexos[index];
-          
-          const blob = this.b64toBlobs(element.anexoBinario);
-          let fileUrl = this.sanitizer.bypassSecurityTrustResourceUrl(window.URL.createObjectURL(blob));
-    
-          element.urlDownload = fileUrl;
-          this.zipFile.file(element.nomeAnexo, blob);
-        }
+        this.mostrarTabela = true;
+        this.selectedIds = new Set<string>();
+        this.selectAllChecked = false;
       } 
     );
 
   }
 
-  public downloadAll():void {
-    
-    this.zipFile.generateAsync({ type: "blob" })
-    .then(function (content) {
-      FileSaver.saveAs(content, localStorage.getItem('chamado')+"-"+localStorage.getItem('maniSeq')+".zip");
-    });
+  public toggleSelectAll(checked: boolean): void {
+    this.selectAllChecked = checked;
+    this.selectedIds = new Set<string>();
 
+    if(checked){
+      for (let index = 0; index < this.lstAnexos.length; index++) {
+        const id = this.lstAnexos[index]?.idMaarCdManifArquivo;
+        if(id != null){
+          this.selectedIds.add(String(id));
+        }
+      }
+    }
+  }
+
+  public toggleSelectOne(anexo: AnexosModel, checked: boolean): void {
+    const id = anexo?.idMaarCdManifArquivo;
+    if(id == null){
+      return;
+    }
+
+    const idStr = String(id);
+
+    if(checked){
+      this.selectedIds.add(idStr);
+    } else {
+      this.selectedIds.delete(idStr);
+    }
+
+    this.selectAllChecked = this.lstAnexos.length > 0 && this.lstAnexos.every(a => a?.idMaarCdManifArquivo != null && this.selectedIds.has(String(a.idMaarCdManifArquivo)));
+  }
+
+  public get hasSelection(): boolean {
+    return this.selectedIds.size > 0;
+  }
+
+  public idToString(id: any): string {
+    return String(id);
+  }
+
+  public async downloadSelected(): Promise<void> {
+
+    this.isDownloading = true;
+    this.downloadTotal = this.selectedIds.size;
+    this.downloadCurrent = 0;
+
+    const zipFile = new JSZip();
+
+    try {
+      for (let index = 0; index < this.lstAnexos.length; index++) {
+        const anexo = this.lstAnexos[index];
+        const id = anexo?.idMaarCdManifArquivo;
+
+        if(id == null){
+          continue;
+        }
+
+        if(!this.selectedIds.has(String(id))){
+          continue;
+        }
+
+        const retorno = await this.anexosService.obterAnexoById(String(id));
+        const item = Array.isArray(retorno) ? retorno[0] : retorno;
+        const b64 = item?.anexoBinario;
+
+        const blob = this.b64toBlobs(b64);
+        zipFile.file(anexo.nomeAnexo, blob);
+
+        this.downloadCurrent = this.downloadCurrent + 1;
+      }
+
+      const content = await zipFile.generateAsync({ type: "blob" });
+      FileSaver.saveAs(content, "anexos.zip");
+    } finally {
+      this.isDownloading = false;
+    }
+  }
+
+  public async downloadAnexo(anexo: AnexosModel): Promise<void> {
+
+    const retorno = await this.anexosService.obterAnexoById(anexo.idMaarCdManifArquivo);
+    const item = Array.isArray(retorno) ? retorno[0] : retorno;
+    const b64 = item?.anexoBinario;
+
+    const blob = this.b64toBlobs(b64);
+    FileSaver.saveAs(blob, anexo.nomeAnexo);
   }
 
   public b64toBlobs = (b64Data, contentType='', sliceSize=512) => {
-    const byteCharacters = atob(b64Data);
+    if(!b64Data){
+      return new Blob([]);
+    }
+
+    const normalized = typeof b64Data === 'string' && b64Data.includes('base64,')
+      ? b64Data.split('base64,')[1]
+      : b64Data;
+
+    const byteCharacters = atob(normalized);
     const byteArrays = [];
  
     for (let offset = 0; offset < byteCharacters.length; offset += sliceSize) {

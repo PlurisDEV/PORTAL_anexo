@@ -1,0 +1,101 @@
+.anexos-page{
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.anexos-card{
+    flex: 1;
+    min-height: 0;
+}
+
+.anexos-header{
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 12px;
+}
+
+.anexos-title{
+    margin: 0;
+    font-size: 22px;
+    font-weight: 600;
+    letter-spacing: .2px;
+}
+
+.anexos-subtitle{
+    margin-top: 4px;
+    font-size: 12px;
+    color: rgba(0,0,0,.55);
+}
+
+.anexos-card{
+    background: #fff;
+    border: 1px solid rgba(0,0,0,.08);
+    border-radius: 12px;
+    box-shadow: 0 6px 22px rgba(0,0,0,.06);
+    overflow: hidden;
+}
+
+.anexos-loading{
+    padding: 24px;
+    display: flex;
+    justify-content: center;
+}
+
+.anexos-table{
+    padding: 8px 8px 0 8px;
+}
+
+.anexos-name{
+    font-weight: 500;
+}
+
+.anexos-date{
+    color: rgba(0,0,0,.65);
+    white-space: nowrap;
+}
+
+.anexos-download{
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 34px;
+    border-radius: 8px;
+    color: #0d6efd;
+    text-decoration: none;
+}
+
+.anexos-download:hover{
+    background: rgba(13,110,253,.08);
+}
+
+.anexos-overlay{
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,.28);
+    z-index: 1050;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+}
+
+.anexos-overlay-card{
+    background: #fff;
+    border-radius: 14px;
+    padding: 18px 20px;
+    min-width: 240px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    box-shadow: 0 14px 50px rgba(0,0,0,.22);
+}
+
+.anexos-overlay-text{
+    font-size: 13px;
+    color: rgba(0,0,0,.7);
+}

@@ -1,40 +1,62 @@
-<div class="row">
-    <h1>Baixar anexos</h1>
-</div>
+<div class="anexos-page">
 
-<mat-progress-spinner mode="indeterminate" diameter="45" *ngIf="mostrarTabela == false"></mat-progress-spinner>
+    <div class="anexos-header">
+        <div>
+            <h1 class="anexos-title">Baixar anexos</h1>
+            <div class="anexos-subtitle" *ngIf="mostrarTabela">{{lstAnexos.length}} anexo(s)</div>
+        </div>
 
-<div style="text-align: right;" *ngIf="mostrarTabela">
-    <button class="btn btn-info btn-sm" data-toggle="modal" (click)="downloadAll()">Baixar todos</button>
-</div>
-
-<div>
-    <div *ngIf="mostrarTabela" >
-    <hr>
-        <table datatable [dtOptions]="dtOptions">
-            <thead>
-                <tr>
-                    <th>Nome</th>
-                    <th>Data</th>
-                    <th>Download</th>
-                </tr>
-            </thead>
-
-            <tbody>
-                <tr *ngFor="let colunas of lstAnexos">
-                    <th>{{colunas.nomeAnexo}}</th>
-                    <th>{{colunas.dtAnexo}}</th>
-                    <th>
-                        <a [href]="colunas.urlDownload" [download]="colunas.nomeAnexo">
-                            <span class="material-icons">
-                                cloud_download
-                            </span>
-                        </a>
-                    </th>
-                </tr>
-            </tbody>
-        </table>
+        <div class="anexos-actions" *ngIf="mostrarTabela">
+            <button class="btn btn-primary btn-sm" [disabled]="!hasSelection || isDownloading" (click)="downloadSelected()">
+                Baixar selecionados
+            </button>
+        </div>
     </div>
+
+    <div class="anexos-card">
+
+        <div class="anexos-loading" *ngIf="mostrarTabela == false">
+            <mat-progress-spinner mode="indeterminate" diameter="45"></mat-progress-spinner>
+        </div>
+
+        <div class="anexos-table" *ngIf="mostrarTabela">
+            <table datatable [dtOptions]="dtOptions" class="table table-striped table-hover mb-0">
+                <thead>
+                    <tr>
+                        <th style="width: 42px;">
+                            <input type="checkbox" [checked]="selectAllChecked" (change)="toggleSelectAll($event.target.checked)" />
+                        </th>
+                        <th>Nome</th>
+                        <th style="width: 160px;">Data</th>
+                        <th style="width: 90px;">Download</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <tr *ngFor="let colunas of lstAnexos">
+                        <td>
+                            <input type="checkbox" [checked]="selectedIds.has(idToString(colunas.idMaarCdManifArquivo))" (change)="toggleSelectOne(colunas, $event.target.checked)" />
+                        </td>
+                        <td class="anexos-name">{{colunas.nomeAnexo}}</td>
+                        <td class="anexos-date">{{colunas.dtAnexo}}</td>
+                        <td>
+                            <a class="anexos-download" href="javascript:void(0)" (click)="downloadAnexo(colunas)">
+                                <span class="material-icons">cloud_download</span>
+                            </a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+
+    <div class="anexos-overlay" *ngIf="isDownloading">
+        <div class="anexos-overlay-card">
+            <mat-progress-spinner mode="indeterminate" diameter="40"></mat-progress-spinner>
+            <div class="anexos-overlay-text">Baixando anexos... {{downloadCurrent}} / {{downloadTotal}}</div>
+        </div>
+    </div>
+
 </div>
-  
 
