@@ -1,17 +1,11 @@
 
-<mat-grid-list cols="4" rowHeight="1:1" >
-    <mat-grid-tile colspan="3" rowspan="2">
-      <app-banner></app-banner>
-    </mat-grid-tile>
-
-    
-    <mat-grid-tile *ngIf="cadastroComponent; else formLogin" colspan="1" rowspan="2">
-      <app-cadastro (exibirPainel)="exibirPainel($event)"></app-cadastro>
-    </mat-grid-tile>
-
-    <ng-template #formLogin>
-      <mat-grid-tile colspan="1" rowspan="2" ><app-login (exibirPainel)="exibirPainel($event)"></app-login></mat-grid-tile>
-    </ng-template>
-      
-    
-</mat-grid-list>
+<div class="acesso-layout">
+  <div class="acesso-auth">
+    <div class="acesso-auth-inner">
+      <app-cadastro *ngIf="cadastroComponent; else formLogin" (exibirPainel)="exibirPainel($event)"></app-cadastro>
+      <ng-template #formLogin>
+        <app-login (exibirPainel)="exibirPainel($event)"></app-login>
+      </ng-template>
+    </div>
+  </div>
+</div>

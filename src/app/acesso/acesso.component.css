@@ -1,0 +1,43 @@
+.acesso-layout{
+  min-height: 100vh;
+  display: flex;
+}
+
+.acesso-banner{
+  flex: 1;
+  min-width: 0;
+}
+
+.acesso-auth{
+  flex: 1;
+  width: 100%;
+  max-width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px 12px;
+  background: #f4f6fb;
+}
+
+.acesso-auth-inner{
+  width: 100%;
+  min-height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@media (max-width: 959px){
+  .acesso-layout{
+    flex-direction: column;
+  }
+
+  .acesso-banner{
+    display: none;
+  }
+
+  .acesso-auth{
+    width: 100%;
+    min-height: 100vh;
+  }
+}
