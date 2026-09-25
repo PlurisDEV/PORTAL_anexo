@@ -14,6 +14,40 @@ import { AnexosService } from './anexos.service';
 })
 export class AnexosComponent implements OnInit {
   
+  private pad(num: number, size: number): string {
+    return String(num).padStart(size, '0');
+  }
+
+  private buildTimestamp(date: Date = new Date()): string {
+    const yyyy = date.getFullYear();
+    const MM = this.pad(date.getMonth() + 1, 2);
+    const dd = this.pad(date.getDate(), 2);
+    const HH = this.pad(date.getHours(), 2);
+    const mm = this.pad(date.getMinutes(), 2);
+    const ss = this.pad(date.getSeconds(), 2);
+    const SSS = this.pad(date.getMilliseconds(), 3);
+
+    return `${yyyy}${MM}${dd}${HH}${mm}${ss}${SSS}`;
+  }
+
+  private appendTimestampToFilename(filename: string, timestamp: string = this.buildTimestamp()): string {
+    if(!filename){
+      return `arquivo_${timestamp}`;
+    }
+
+    const cleanFilename = String(filename).replace(/[/\\]+/g, '_');
+    const lastDot = cleanFilename.lastIndexOf('.');
+
+    if(lastDot <= 0 || lastDot === cleanFilename.length - 1){
+      return `${cleanFilename}_${timestamp}`;
+    }
+
+    const base = cleanFilename.substring(0, lastDot);
+    const ext = cleanFilename.substring(lastDot); // includes '.'
+
+    return `${base}_${timestamp}${ext}`;
+  }
+
   public idFuncSessao:string = localStorage.getItem('idFuncionario'); 
   public chamadoSessao:string = localStorage.getItem('chamado'); 
   public maniSeqSessao:string = localStorage.getItem('maniSeq'); 
@@ -159,7 +193,8 @@ export class AnexosComponent implements OnInit {
         const b64 = item?.anexoBinario;
 
         const blob = this.b64toBlobs(b64);
-        zipFile.file(anexo.nomeAnexo, blob);
+        const filename = this.appendTimestampToFilename(anexo.nomeAnexo);
+        zipFile.file(filename, blob);
 
         this.downloadCurrent = this.downloadCurrent + 1;
       }
@@ -178,7 +213,8 @@ export class AnexosComponent implements OnInit {
     const b64 = item?.anexoBinario;
 
     const blob = this.b64toBlobs(b64);
-    FileSaver.saveAs(blob, anexo.nomeAnexo);
+    const filename = this.appendTimestampToFilename(anexo.nomeAnexo);
+    FileSaver.saveAs(blob, filename);
   }
 
   public b64toBlobs = (b64Data, contentType='', sliceSize=512) => {
